@@ -45,3 +45,13 @@ the bungee-transfer-player plugin, which responds to events to transfer players 
   "world": "string"
 }
 #+end_src
+* How to tell if a game is in session?
+1. When a player leaves the 1000 x 1000 box around spawn
+2. Create a list of all players
+3. When a player dies update the list to reflect they are dead
+4. When all players are dead or disconnected, session is over.
+
+If a session is not in progress and a player is outside the 1000 x 1000 box
+we move the player back to spawn. (0, 100, 0).
+
+If a player is dead, leaves and rejoins, we set them back to spectator mode.

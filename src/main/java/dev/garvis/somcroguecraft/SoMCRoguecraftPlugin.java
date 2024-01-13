@@ -16,11 +16,21 @@ public class SoMCRoguecraftPlugin extends JavaPlugin {
     
     private KafkaManager kafka = new KafkaManager();
     private boolean running = true;
-    
+
     @Override
     public void onEnable() {
 	this.saveDefaultConfig();
 	this.attemptToConnectToKafka();
+    }
+
+    private void updateWorldState(String state) {
+	String world = getConfig().getString("bungeeWorldName");
+	
+	KafkaManager.Message e = this.kafka.new Message();
+	e.put("eventType", "WORLD_STATE_UPDATE");
+	e.put("world", world);
+	e.put("state", state);
+	kafka.sendMessage(e);	
     }
 
     private void attemptToConnectToKafka() {
@@ -69,7 +79,18 @@ public class SoMCRoguecraftPlugin extends JavaPlugin {
 
 		    switch ((String)message.get("eventType")) {
 		    case "WORLD_JOIN_APPROVED":
-			// TODO
+
+			String world = getConfig().getString("bungeeWorldName");
+
+			// Are they asking to be transfered to our world?
+			if (!((String)message.get("world")).equals(world)) return;
+
+			// Tranfer them to our world.
+			KafkaManager.Message e = this.kafka.new Message();
+			e.put("eventType", "TRANSFER_PLAYER");
+			e.put("playerName", (String)message.get("playerName"));
+			e.put("world", world);
+			kafka.sendMessage(e);
 			break;
 		    }
 		}
