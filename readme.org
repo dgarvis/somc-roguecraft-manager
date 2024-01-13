@@ -1,0 +1,47 @@
+#+title: SoMC RogueCraft Manager
+#+author: Dylan Garvis
+#+email: Dylan@Garvis.dev
+
+* Overview
+SoMC: Social Minecraft is going to be adding [[https://modrinth.com/datapack/rogue-craft][Roguecraft]] to it offering of gamemodes. However roguecraft has
+some issues if a player joins after a run is already started or if they they rejoin the game after they have
+died. 
+
+This plugin works by sending out an event to let other systems know the current state of the world and will transfer players
+to the world when it gets a message they are approved for this game mode after they have requested it.
+
+* Architecture
+
+This server sits behind a BungeeCord Proxy where access should be set to restricted. The bungeecord proxy should be running
+the bungee-transfer-player plugin, which responds to events to transfer players between servers.
+
+* Issues Address
+- Late Joins / Re-joins :: Sends out a world state that lets players know the world is currently blocked.
+
+* Events
+** Incoming
+*** World Join Approved
+#+begin_src json
+{
+  "eventType": "WORLD_JOIN_APPROVED",
+  "playerName": "string",
+  "world": "string"
+}
+#+end_src
+** Outgoing
+*** World State Update
+#+begin_src json
+{
+  "eventType": "WORLD_STATE_UPDATE",
+  "world": "string",
+  "state": "string"
+}
+#+end_src
+*** Transfer Player
+#+begin_src json
+{
+  "eventType": "TRANSFER_PLAYER",
+  "playerName": "string",
+  "world": "string"
+}
+#+end_src

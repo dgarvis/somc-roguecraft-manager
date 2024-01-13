@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  roguecraft:
+    image: itzg/minecraft-server
+    ports:
+      - "25565:25565"
+    restart: always
+    volumes:
+      - "./plugins:/data/plugins"
+    environment:
+      EULA: "TRUE"
+      TYPE: "SPIGOT"
+      VERSION: "1.20.4"
+      SPIGOT_DOWNLOAD_URL: "https://dl.somc.club/spigot-1.20.4.jar"
+      MEMORY: 8G
+      OPS: "WindMagi"
+      LEVEL: world
+
+      RESOURCE_PACK: "https://dl.somc.club/Roguecraft_Resource_Pack_1.0.2.zip"
+      RESOURCE_PACK_SHA1: "53738e04c598294977e89e474582e4874404a497"
+      RESOURCE_PACK_ENFORCE: "TRUE"
+
+      DATAPACKS: "https://dl.somc.club/Roguecraft_1.0.5.zip"
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    ports:
+      - "9092:9092"
+    #volumes:
+    #  - "kafka_data:/bitnami"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    #volumes:
+    #  - ./kui-config.yml:/etc/kafkaui/dynamic_config.yaml
+
+#volumes:

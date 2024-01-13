@@ -1,0 +1,4 @@
+name: SoMCRoguecraft
+version: 1.0
+main: dev.garvis.somcroguecraft.SoMCRoguecraftPlugin
+api-version: 1.20
