@@ -7,14 +7,6 @@ SoMC: Social Minecraft is going to be adding [[https://modrinth.com/datapack/rog
 some issues if a player joins after a run is already started or if they they rejoin the game after they have
 died. 
 
-This plugin works by sending out an event to let other systems know the current state of the world and will transfer players
-to the world when it gets a message they are approved for this game mode after they have requested it.
-
-* Architecture
-
-This server sits behind a BungeeCord Proxy where access should be set to restricted. The bungeecord proxy should be running
-the bungee-transfer-player plugin, which responds to events to transfer players between servers.
-
 * Issues Address
 - Late Joins / Re-joins :: Sends out a world state that lets players know the world is currently blocked.
 
@@ -29,6 +21,8 @@ the bungee-transfer-player plugin, which responds to events to transfer players 
 }
 #+end_src
 ** Outgoing
+*** TODO Game Started
+*** TODO Game Ended 
 *** World State Update
 #+begin_src json
 {
@@ -46,12 +40,6 @@ the bungee-transfer-player plugin, which responds to events to transfer players 
 }
 #+end_src
 * How to tell if a game is in session?
-1. When a player leaves the 1000 x 1000 box around spawn
-2. Create a list of all players
-3. When a player dies update the list to reflect they are dead
-4. When all players are dead or disconnected, session is over.
-
-If a session is not in progress and a player is outside the 1000 x 1000 box
-we move the player back to spawn. (0, 100, 0).
-
-If a player is dead, leaves and rejoins, we set them back to spectator mode.
+A game is in session when a player switches to survival game mode. The game 
+session ends when a player is switched to adventure mode. A basic check,
+but works pretty well.
