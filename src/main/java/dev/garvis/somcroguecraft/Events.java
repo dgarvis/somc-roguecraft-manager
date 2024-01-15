@@ -58,16 +58,16 @@ public class Events implements Listener {
 		boolean hasBar = false;
 		for (Player p : Bukkit.getBossBar(NamespacedKey.fromString("minecraft:difficulty")).getPlayers()) {
 		    hasBar = hasBar || (p == event.getPlayer());
-		    Bukkit.getLogger().info(p.getName());
+		    //Bukkit.getLogger().info(p.getName());
 		}
-		Bukkit.getLogger().info(hasBar ? "true" : "false");
+		//Bukkit.getLogger().info(hasBar ? "true" : "false");
 		
 		// If a game is in session, and the player is at spawn, set them to specator mode.
 		if (gameInProgress && !hasBar) {
 		    // or they are more than 50,000 blocks from spawn? But what if they are in the nether...
 		    // lets check if the player is part of the boss bar list for difficulty.
 		    event.getPlayer().setGameMode(GameMode.SPECTATOR);
-		    Bukkit.getLogger().info(event.getPlayer().getName() + " now spectator");
+		    //Bukkit.getLogger().info(event.getPlayer().getName() + " now spectator");
 		    return;
 		}
 	    }, 20 * 3);
