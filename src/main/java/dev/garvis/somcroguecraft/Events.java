@@ -22,16 +22,17 @@ public class Events implements Listener {
     
     @EventHandler
     public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
-	// If the players all changed to survial/spectator, than the game has started.
-	// If a player changed from survival to spectaor than they died.
-	// If a player changed from spectator to adventure than the game is done.
 
+	// If game is not currently in progress, but a player was switched to survival,
+	// the game is now in progress.
 	if (!gameInProgress && event.getNewGameMode() == GameMode.SURVIVAL) {
 	    Bukkit.getLogger().info("Game Started");
 	    gameInProgress = true;
 	    return;
 	}
 
+	// If a game is in progress, but a player got switched to adventure mode,
+	// the game is no longer in progress.
 	if (gameInProgress && event.getNewGameMode() == GameMode.ADVENTURE) {
 	    Bukkit.getLogger().info("Game Ended");
 	    gameInProgress = false; // might need to check all players.
@@ -40,12 +41,12 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    //public void onPlayerLogin(PlayerLoginEvent event) {
     public void onPlayerJoin(PlayerJoinEvent event) {
 	GameMode mode = event.getPlayer().getGameMode();
-	
-	// If they are not in adventure mode and the game is not in session
-	// call the function roguecraft:run_end
+
+	// If the game is not in progress, but they are not in adventure mode,
+	// we need to reset them... ie defeat them. It is possible they were in a
+	// run that happened in the past and left early.
 	if (!gameInProgress &&  mode != GameMode.ADVENTURE) {
 	    event.getPlayer().getInventory().clear();
 	    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "function roguecraft:run_end");
@@ -53,24 +54,28 @@ public class Events implements Listener {
 	}
 
 
-	// Does the player have the difficultly boss bar.
-	Bukkit.getScheduler().runTaskLater(plugin, () -> {
-		boolean hasBar = false;
-		for (Player p : Bukkit.getBossBar(NamespacedKey.fromString("minecraft:difficulty")).getPlayers()) {
-		    hasBar = hasBar || (p == event.getPlayer());
-		    //Bukkit.getLogger().info(p.getName());
-		}
-		//Bukkit.getLogger().info(hasBar ? "true" : "false");
+	// If a game is in progress, we need to check if the current player has the boss bar.
+	// If they don't have it, they should be set to spectaor mode as they are not part of the
+	// current run.
+	if (gameInProgress) {
+
+	    // We need to wait for the player to login and boss bars to be added to them for
+	    // this next check.
+	    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
+		    boolean hasBar = false;
+		    for (Player p : Bukkit
+			     .getBossBar(NamespacedKey.fromString("minecraft:difficulty"))
+			     .getPlayers()) {
+			hasBar = hasBar || (p == event.getPlayer());
+		    }
 		
-		// If a game is in session, and the player is at spawn, set them to specator mode.
-		if (gameInProgress && !hasBar) {
-		    // or they are more than 50,000 blocks from spawn? But what if they are in the nether...
-		    // lets check if the player is part of the boss bar list for difficulty.
-		    event.getPlayer().setGameMode(GameMode.SPECTATOR);
-		    //Bukkit.getLogger().info(event.getPlayer().getName() + " now spectator");
-		    return;
-		}
-	    }, 20 * 3);
+		    if (!hasBar) {
+			event.getPlayer().setGameMode(GameMode.SPECTATOR);
+			return;
+		    }
+		}, 20 * 3);
+	}
     }
     
 }
