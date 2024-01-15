@@ -47,6 +47,7 @@ public class Events implements Listener {
 	// If they are not in adventure mode and the game is not in session
 	// call the function roguecraft:run_end
 	if (!gameInProgress &&  mode != GameMode.ADVENTURE) {
+	    event.getPlayer().getInventory().clear();
 	    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "function roguecraft:run_end");
 	    return;
 	}
