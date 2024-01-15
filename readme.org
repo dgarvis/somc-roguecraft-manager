@@ -10,35 +10,6 @@ died.
 * Issues Address
 - Late Joins / Re-joins :: Sends out a world state that lets players know the world is currently blocked.
 
-* Events
-** Incoming
-*** World Join Approved
-#+begin_src json
-{
-  "eventType": "WORLD_JOIN_APPROVED",
-  "playerName": "string",
-  "world": "string"
-}
-#+end_src
-** Outgoing
-*** TODO Game Started
-*** TODO Game Ended 
-*** World State Update
-#+begin_src json
-{
-  "eventType": "WORLD_STATE_UPDATE",
-  "world": "string",
-  "state": "string"
-}
-#+end_src
-*** Transfer Player
-#+begin_src json
-{
-  "eventType": "TRANSFER_PLAYER",
-  "playerName": "string",
-  "world": "string"
-}
-#+end_src
 * How to tell if a game is in session?
 A game is in session when a player switches to survival game mode. The game 
 session ends when a player is switched to adventure mode. A basic check,
