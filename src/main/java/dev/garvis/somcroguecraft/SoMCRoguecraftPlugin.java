@@ -1,6 +1,7 @@
 package dev.garvis.somcroguecraft;
 
 import dev.garvis.somcroguecraft.KafkaManager;
+import dev.garvis.somcroguecraft.Events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,8 @@ public class SoMCRoguecraftPlugin extends JavaPlugin {
     public void onEnable() {
 	this.saveDefaultConfig();
 	this.attemptToConnectToKafka();
+
+	getServer().getPluginManager().registerEvents(new Events(this), this);
     }
 
     private void updateWorldState(String state) {

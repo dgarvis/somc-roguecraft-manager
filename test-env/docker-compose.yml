@@ -7,6 +7,7 @@ services:
       - "25565:25565"
     restart: always
     volumes:
+      
       - "./plugins:/data/plugins"
     environment:
       EULA: "TRUE"
@@ -22,6 +23,8 @@ services:
       RESOURCE_PACK_ENFORCE: "TRUE"
 
       DATAPACKS: "https://dl.somc.club/Roguecraft_1.0.5.zip"
+
+      SPAWN_PROTECTION: 0
   kafka:
     image: docker.io/bitnami/kafka:3.6
     ports:
