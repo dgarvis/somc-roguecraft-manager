@@ -2,6 +2,9 @@
 #+author: Dylan Garvis
 #+email: Dylan@Garvis.dev
 
+* DEPRECATED
+As of roguecraft 1.10, this should no longer be required.
+
 * Overview
 SoMC: Social Minecraft is going to be adding [[https://modrinth.com/datapack/rogue-craft][Roguecraft]] to it offering of gamemodes. However roguecraft has
 some issues if a player joins after a run is already started or if they they rejoin the game after they have
