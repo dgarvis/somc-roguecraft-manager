@@ -1,12 +1,12 @@
-#+title: SoMC RogueCraft Manager
+#+title: SoMC Roguecraft Manager
 #+author: Dylan Garvis
 #+email: Dylan@Garvis.dev
 
 * DEPRECATED
-As of roguecraft 1.10, this should no longer be required.
+As of Roguecraft 1.10, this should no longer be required.
 
 * Overview
-SoMC: Social Minecraft is going to be adding [[https://modrinth.com/datapack/rogue-craft][Roguecraft]] to it offering of gamemodes. However roguecraft has
+SoMC: Social Mine craft is going to be adding [[https://modrinth.com/datapack/rogue-craft][Roguecraft]] to it offering of game modes. However Roguecraft has
 some issues if a player joins after a run is already started or if they they rejoin the game after they have
 died. 
 
